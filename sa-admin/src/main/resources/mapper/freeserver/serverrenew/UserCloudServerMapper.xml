@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.lab1024.sa.admin.module.freeserver.serverrenew.dao.UserCloudServerDao">
+
+    <!-- 查询结果列 -->
+    <sql id="base_columns">
+        t_user_cloud_server.id,
+        t_user_cloud_server.server_type,
+        t_user_cloud_server.username,
+        t_user_cloud_server.password,
+        t_user_cloud_server.enable,
+        t_user_cloud_server.enable_email,
+        t_user_cloud_server.remark,
+        t_user_cloud_server.create_id,
+        t_user_cloud_server.update_id,
+        t_user_cloud_server.create_time,
+        t_user_cloud_server.update_time
+    </sql>
+
+    <!-- 分页查询 -->
+    <select id="queryPage" resultType="net.lab1024.sa.admin.module.freeserver.serverrenew.domain.vo.UserCloudServerVO">
+        SELECT
+        <include refid="base_columns"/>
+        FROM t_user_cloud_server
+    </select>
+
+
+</mapper>
