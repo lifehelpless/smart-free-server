@@ -21,6 +21,13 @@ spring:
   profiles:
     active: 'dev'
 
+alipay:
+  app-id: 你的AppID
+  private-key: 你的应用私钥
+  alipay-public-key: 你的支付宝公钥
+  notify-url: https://你的域名/api/vip/alipay/notify
+  return-url: https://你的域名/vip/success
+
 #免费服务器地址 配置示例 配置多个别忘了copy "-"
 #username： 账号， password： 密码， type： 0 阿贝云， 1三丰云
 cloudServers:

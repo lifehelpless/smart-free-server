@@ -343,6 +343,12 @@
                 <artifactId>org.eclipse.jgit.ssh.apache</artifactId>
                 <version>${jgit.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.alipay.sdk</groupId>
+                <artifactId>alipay-sdk-java</artifactId>
+                <version>4.9.9</version>
+            </dependency>
         </dependencies>
 
     </dependencyManagement>
