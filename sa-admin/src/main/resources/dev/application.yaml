@@ -66,7 +66,7 @@ blogInfo:
   #格式: git@github.com:{用户名}/{用户名(全为小写)}.github.io.git
   uri: git@github.com:Demo-AD/demo-ad.github.io.git
   #仓库拉取到本地时的路径
-  localPath: /freeServer/repo
+  localPath: D:/freeServer/repo
   #如果使用我提供的GitHub Pages,这里最好填写你的github用户名 可以防止发布文章地址冲突
   username: Demo-Liu
 
@@ -75,7 +75,7 @@ phantomJs:
   #phantomJs 路径  windows 和 Linux x86_64已经嵌入了项目,其它系统请自行配置此项
   phantomJsExec:
   #图片生成路径
-  picPath: /freeServer/phantomJsPic/postpone.png
+  picPath: D:/freeServer/phantomJsPic/postpone.png
 
 #系统配置
 #博客初始化等待次数 如果使用作者提供的公用仓库, 最好把初始化等待时间调大一点  建议为半小时以内
@@ -84,4 +84,4 @@ blogInitWaitCount: 10
 blogInitWaitTime: 1
 
 #资源文件提取路径
-resourceTempFilePath: /freeServer/resource
+resourceTempFilePath: D:/freeServer/resource

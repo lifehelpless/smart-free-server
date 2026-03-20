@@ -34,6 +34,7 @@
         <commons-lang3.version>3.18.0</commons-lang3.version>
         <commons-collections4.version>4.5.0</commons-collections4.version>
         <commons-compress.version>1.27.1</commons-compress.version>
+        <tukaani.version>1.10</tukaani.version>
         <commons-codec.version>1.18.0</commons-codec.version>
         <commons-text.version>1.13.1</commons-text.version>
         <fast-excel.version>1.2.0</fast-excel.version>
@@ -160,6 +161,12 @@
                 <groupId>org.apache.commons</groupId>
                 <artifactId>commons-compress</artifactId>
                 <version>${commons-compress.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.tukaani</groupId>
+                <artifactId>xz</artifactId>
+                <version>${tukaani.version}</version>
             </dependency>
 
             <dependency>
@@ -359,6 +366,12 @@
             <resource>
                 <filtering>false</filtering>
                 <directory>src/main/resources</directory>
+                <includes>
+                    <include>resource/*.7z</include>
+                    <include>static/**/*.js</include>
+                    <include>mapper/**/*.xml</include>
+                    <include>*.xdb</include>
+                </includes>
                 <excludes>
                     <exclude>dev/*</exclude>
                     <exclude>test/*</exclude>
@@ -382,9 +395,28 @@
                     <include>*.*</include>
                 </includes>
             </resource>
+
+            <resource>
+                <directory>src/main/java</directory>
+                <filtering>false</filtering>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
         </resources>
 
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <configuration>
+                    <nonFilteredFileExtensions>
+                        <nonFilteredFileExtension>7z</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>zip</nonFilteredFileExtension>
+                        <nonFilteredFileExtension>exe</nonFilteredFileExtension>
+                    </nonFilteredFileExtensions>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

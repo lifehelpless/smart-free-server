@@ -8,6 +8,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -122,7 +123,7 @@ public class FileUtil {
      */
     public static void copyResourceToFile(String resourcePath, File file) throws IOException {
         if(!file.exists()){
-            FileUtils.copyToFile(InitConfig.class.getResourceAsStream(resourcePath), file);
+            FileUtils.copyToFile(Objects.requireNonNull(InitConfig.class.getResourceAsStream(resourcePath)), file);
         }
     }
 
@@ -132,14 +133,27 @@ public class FileUtil {
      * @param outPath 输出文件路径
      */
     public static void un7z(String filePath, String outPath) throws IOException {
-        SevenZFile sevenZFile = new SevenZFile(new File(filePath));
-        SevenZArchiveEntry entry;
-        while ((entry = sevenZFile.getNextEntry()) != null) {
-            File file = new File(outPath + File.separator + entry.getName());
-            Files.createDirectories(new File(outPath).toPath());
-            byte[] content = new byte[(int) entry.getSize()];
-            sevenZFile.read(content);
-            Files.write(file.toPath(), content);
+        File srcFile = new File(filePath);
+        try (SevenZFile sevenZFile = new SevenZFile(srcFile)) {
+            SevenZArchiveEntry entry;
+            while ((entry = sevenZFile.getNextEntry()) != null) {
+                if (entry.isDirectory()) continue;
+
+                File file = new File(outPath, entry.getName());
+                // 阿里手册：必须确保父目录存在
+                if (!file.getParentFile().exists()) {
+                    file.getParentFile().mkdirs();
+                }
+
+                // 使用缓冲区写入，防止 OOM
+                try (OutputStream out = new FileOutputStream(file)) {
+                    byte[] buffer = new byte[4096];
+                    int len;
+                    while ((len = sevenZFile.read(buffer)) != -1) {
+                        out.write(buffer, 0, len);
+                    }
+                }
+            }
         }
     }
 }
