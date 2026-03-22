@@ -66,4 +66,7 @@ public class EmployeeAddForm {
     @Length(max = 200, message = "备注最多200字符")
     private String remark;
 
+    @Schema(description = "会员等级")
+    private Integer vipLevel;
+
 }

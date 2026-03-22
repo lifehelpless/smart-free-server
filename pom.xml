@@ -366,12 +366,6 @@
             <resource>
                 <filtering>false</filtering>
                 <directory>src/main/resources</directory>
-                <includes>
-                    <include>resource/*.7z</include>
-                    <include>static/**/*.js</include>
-                    <include>mapper/**/*.xml</include>
-                    <include>*.xdb</include>
-                </includes>
                 <excludes>
                     <exclude>dev/*</exclude>
                     <exclude>test/*</exclude>
@@ -395,28 +389,9 @@
                     <include>*.*</include>
                 </includes>
             </resource>
-
-            <resource>
-                <directory>src/main/java</directory>
-                <filtering>false</filtering>
-                <includes>
-                    <include>**/*.xml</include>
-                </includes>
-            </resource>
         </resources>
 
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-resources-plugin</artifactId>
-                <configuration>
-                    <nonFilteredFileExtensions>
-                        <nonFilteredFileExtension>7z</nonFilteredFileExtension>
-                        <nonFilteredFileExtension>zip</nonFilteredFileExtension>
-                        <nonFilteredFileExtension>exe</nonFilteredFileExtension>
-                    </nonFilteredFileExtensions>
-                </configuration>
-            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

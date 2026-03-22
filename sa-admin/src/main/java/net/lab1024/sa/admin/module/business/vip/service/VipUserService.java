@@ -5,11 +5,14 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import net.lab1024.sa.admin.enums.vip.VipStatusEnum;
+import net.lab1024.sa.admin.module.business.vip.dao.VipPackageDao;
 import net.lab1024.sa.admin.module.business.vip.dao.VipUserDao;
+import net.lab1024.sa.admin.module.business.vip.domain.entity.VipPackageEntity;
 import net.lab1024.sa.admin.module.business.vip.domain.entity.VipUserEntity;
 import net.lab1024.sa.admin.module.business.vip.domain.form.VipUserQueryForm;
 import net.lab1024.sa.admin.module.business.vip.domain.vo.VipUserVO;
 import net.lab1024.sa.base.common.domain.PageResult;
+import net.lab1024.sa.base.common.exception.BusinessException;
 import net.lab1024.sa.base.common.util.SmartPageUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +35,9 @@ public class VipUserService {
     @Resource
     private VipUserDao vipUserDao;
 
+    @Resource
+    private VipPackageDao vipPackageDao;
+
     /**
      * 分页查询
      */
@@ -42,13 +48,20 @@ public class VipUserService {
     }
 
     @Transactional(rollbackFor = Exception.class)
-    public void addOrExtendVip(Long userId, Integer vipLevel, Integer addDays) {
-        log.info("开始发放VIP权益, userId: {}, vipLevel: {}, 增加天数: {}", userId, vipLevel, addDays);
+    public void addOrExtendVip(Long userId, Integer vipLevel) {
+        log.info("开始发放VIP权益, userId: {}, vipLevel: {}", userId, vipLevel);
 
+        // 查询会员信息
+        VipPackageEntity vipPackage = vipPackageDao.selectOne(Wrappers.<VipPackageEntity>lambdaQuery().eq(VipPackageEntity::getVipLevel, vipLevel));
+        if (vipPackage == null) {
+            throw new BusinessException("会员配置错误，请联系管理员");
+        }
         // 1. 查询用户当前VIP记录
         VipUserEntity userVip = vipUserDao.selectOne(Wrappers.<VipUserEntity>lambdaQuery().eq(VipUserEntity::getUserId, userId));
 
         LocalDateTime now = LocalDateTime.now();
+        // 增加会员日期
+        int addDays = vipPackage.getDurationDays() <= 0 ? 999999 : vipPackage.getDurationDays();
 
         if (userVip == null) {
             // 2. 首次开通

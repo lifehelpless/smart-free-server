@@ -1,8 +1,11 @@
 package net.lab1024.sa.admin.module.business.vip.domain.form;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+
+import java.math.BigDecimal;
 
 /**
  * VIP会员套餐表 更新表单
@@ -13,7 +16,7 @@ import lombok.Data;
  */
 
 @Data
-public class VipPackageUpdateForm {
+public class VipPackageUpdateForm extends VipPackageAddForm{
 
     @Schema(description = "主键ID", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "主键ID 不能为空")

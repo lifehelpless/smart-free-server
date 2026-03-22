@@ -149,7 +149,7 @@ public class EmployeeService {
 
         // 保存数据
         entity.setDeletedFlag(Boolean.FALSE);
-        employeeManager.saveEmployee(entity, employeeAddForm.getRoleIdList());
+        employeeManager.saveEmployee(entity, employeeAddForm.getRoleIdList(), employeeAddForm.getVipLevel());
 
         return ResponseDTO.ok(randomPassword);
     }
@@ -183,7 +183,7 @@ public class EmployeeService {
         entity.setLoginPwd(null);
 
         // 更新数据
-        employeeManager.updateEmployee(entity, employeeUpdateForm.getRoleIdList());
+        employeeManager.updateEmployee(entity, employeeUpdateForm.getRoleIdList(), employeeUpdateForm.getVipLevel());
 
         // 清除员工缓存
         loginService.clearLoginEmployeeCache(employeeId);

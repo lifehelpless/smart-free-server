@@ -1,11 +1,12 @@
 package net.lab1024.sa.admin.module.business.vip.domain.form;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import lombok.Data;
+import net.lab1024.sa.base.common.json.deserializer.DictDataDeserializer;
 
 /**
  * VIP会员套餐表 新建表单
@@ -28,6 +29,7 @@ public class VipPackageAddForm {
 
     @Schema(description = "绑定的会员等级: VipLevelEnum", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "绑定的会员等级: VipLevelEnum 不能为空")
+    @JsonDeserialize(using = DictDataDeserializer.class)
     private Integer vipLevel;
 
     @Schema(description = "会员可用时间(天数)，如: 30, 90, 365", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -53,13 +55,5 @@ public class VipPackageAddForm {
     @Schema(description = "状态: 1-下架, 0-上架", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "状态: 1-下架, 0-上架 不能为空")
     private Integer status;
-
-    @Schema(description = "创建时间", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotNull(message = "创建时间 不能为空")
-    private LocalDateTime createTime;
-
-    @Schema(description = "修改时间", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotNull(message = "修改时间 不能为空")
-    private LocalDateTime updateTime;
 
 }

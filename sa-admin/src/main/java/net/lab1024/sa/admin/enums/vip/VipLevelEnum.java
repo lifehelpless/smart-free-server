@@ -28,11 +28,22 @@ public enum VipLevelEnum {
         if (code == null) {
             return "未知等级";
         }
-        for (VipLevelEnum levelEnum : VipLevelEnum.values()) {
-            if (levelEnum.getCode().equals(code)) {
-                return levelEnum.getDesc();
-            }
+        VipLevelEnum vipLevelEnum = getByCode(code);
+        if (vipLevelEnum != null) {
+            return vipLevelEnum.getDesc();
         }
         return "未知等级";
+    }
+
+    public static VipLevelEnum getByCode(Integer code) {
+        if (code == null) {
+            return null;
+        }
+        for (VipLevelEnum levelEnum : VipLevelEnum.values()) {
+            if (levelEnum.getCode().equals(code)) {
+                return levelEnum;
+            }
+        }
+        return null;
     }
 }

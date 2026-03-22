@@ -3,6 +3,8 @@ package net.lab1024.sa.admin.module.system.employee.manager;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
+import net.lab1024.sa.admin.enums.vip.VipLevelEnum;
+import net.lab1024.sa.admin.module.business.vip.service.VipUserService;
 import net.lab1024.sa.admin.module.system.employee.dao.EmployeeDao;
 import net.lab1024.sa.admin.module.system.employee.domain.entity.EmployeeEntity;
 import net.lab1024.sa.admin.module.system.role.dao.RoleEmployeeDao;
@@ -36,12 +38,15 @@ public class EmployeeManager extends ServiceImpl<EmployeeDao, EmployeeEntity> {
     @Resource
     private RoleEmployeeDao roleEmployeeDao;
 
+    @Resource
+    private VipUserService vipUserService;
+
     /**
      * 保存员工
      *
      */
     @Transactional(rollbackFor = Throwable.class)
-    public void saveEmployee(EmployeeEntity employee, List<Long> roleIdList) {
+    public void saveEmployee(EmployeeEntity employee, List<Long> roleIdList, Integer vipLevel) {
         // 保存员工 获得id
         employeeDao.insert(employee);
 
@@ -49,6 +54,10 @@ public class EmployeeManager extends ServiceImpl<EmployeeDao, EmployeeEntity> {
             List<RoleEmployeeEntity> roleEmployeeList = roleIdList.stream().map(e -> new RoleEmployeeEntity(e, employee.getEmployeeId())).collect(Collectors.toList());
             roleEmployeeService.batchInsert(roleEmployeeList);
         }
+
+        // 设置会员，如果没有则默认基础会员
+        this.updateEmployeeVipLevel(employee.getEmployeeId(), vipLevel);
+
     }
 
     /**
@@ -56,7 +65,7 @@ public class EmployeeManager extends ServiceImpl<EmployeeDao, EmployeeEntity> {
      *
      */
     @Transactional(rollbackFor = Throwable.class)
-    public void updateEmployee(EmployeeEntity employee, List<Long> roleIdList) {
+    public void updateEmployee(EmployeeEntity employee, List<Long> roleIdList, Integer vipLevel) {
         // 保存员工 获得id
         employeeDao.updateById(employee);
 
@@ -68,6 +77,24 @@ public class EmployeeManager extends ServiceImpl<EmployeeDao, EmployeeEntity> {
 
         List<RoleEmployeeEntity> roleEmployeeList = roleIdList.stream().map(e -> new RoleEmployeeEntity(e, employee.getEmployeeId())).collect(Collectors.toList());
         this.updateEmployeeRole(employee.getEmployeeId(), roleEmployeeList);
+        // 设置会员，如果没有则默认基础会员
+        this.updateEmployeeVipLevel(employee.getEmployeeId(), vipLevel);
+    }
+
+
+    /**
+     * 更新会员信息
+     * @param employeeId
+     * @param vipLevel
+     */
+    @Transactional(rollbackFor = Throwable.class)
+    public void updateEmployeeVipLevel(Long employeeId, Integer vipLevel) {
+
+        // 设置会员，如果没有则默认基础会员
+        if (vipLevel == null) {
+            vipLevel = VipLevelEnum.NONE.getCode();
+        }
+        vipUserService.addOrExtendVip(employeeId, vipLevel);
     }
 
     /**
