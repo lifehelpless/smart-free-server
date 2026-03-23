@@ -8,6 +8,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import lombok.Data;
+import net.lab1024.sa.admin.constant.ConfigTypeEnum;
 
 /**
  * VIP会员套餐表 实体类
@@ -18,7 +19,7 @@ import lombok.Data;
  */
 
 @Data
-@TableName("t_vip_package")
+@TableName("t_membership_package")
 public class MemberPackageEntity {
 
     /**
@@ -33,7 +34,7 @@ public class MemberPackageEntity {
     private String name;
 
     /**
-     * 绑定的会员等级: MemberLevelEnum
+     * 绑定的会员等级: 等级权重: 数值越大等级越高
      */
     private Integer vipLevel;
 
@@ -45,22 +46,24 @@ public class MemberPackageEntity {
     /**
      * 会员可添加配置数量上限 (核心权益)
      */
-    private Integer configLimit;
+    private Integer serviceLimit;
 
     /**
-     * 原价
+     * 售卖价格
      */
-    private BigDecimal originalPrice;
-
-    /**
-     * 实际售卖价格
-     */
-    private BigDecimal actualPrice;
+    private BigDecimal price;
 
     /**
      * 排序码(降序排列)
      */
     private Integer sortCode;
+
+    /**
+     * 参数类型
+     *
+     * 枚举 {@link ConfigTypeEnum}
+     */
+    private Integer type;
 
     /**
      * 状态: 0-下架, 1-上架

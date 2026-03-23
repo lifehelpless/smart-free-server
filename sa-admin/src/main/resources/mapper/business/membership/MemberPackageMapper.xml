@@ -9,9 +9,9 @@
         t_membership_package.vip_level,
         t_membership_package.duration_days,
         t_membership_package.service_limit,
-        t_membership_package.original_price,
-        t_membership_package.actual_price,
+        t_membership_package.price,
         t_membership_package.sort_code,
+        t_membership_package.type,
         t_membership_package.status,
         t_membership_package.create_time,
         t_membership_package.update_time

@@ -3,6 +3,7 @@ package net.lab1024.sa.admin.module.business.membership.service;
 import java.util.List;
 import java.util.Objects;
 
+import net.lab1024.sa.admin.constant.ConfigTypeEnum;
 import net.lab1024.sa.admin.module.business.membership.dao.MemberPackageDao;
 import net.lab1024.sa.admin.module.business.membership.domain.entity.MemberPackageEntity;
 import net.lab1024.sa.admin.module.business.membership.domain.vo.MemberPackageVO;
@@ -48,8 +49,9 @@ public class MemberPackageService {
      */
     public ResponseDTO<String> add(MemberPackageAddForm addForm) {
         validateVipLevelUnique(null, addForm.getVipLevel());
-        MemberPackageEntity vipPackageEntity = SmartBeanUtil.copy(addForm, MemberPackageEntity.class);
-        memberPackageDao.insert(vipPackageEntity);
+        MemberPackageEntity memberPackageEntity = SmartBeanUtil.copy(addForm, MemberPackageEntity.class);
+        memberPackageEntity.setType(ConfigTypeEnum.CUSTOM.getType());
+        memberPackageDao.insert(memberPackageEntity);
         return ResponseDTO.ok();
     }
 
@@ -104,16 +106,14 @@ public class MemberPackageService {
      * 校验会员是否唯一
      */
     public void validateVipLevelUnique(Long id, Integer vipLevel) {
-        // 1. 先判断等级是否合法
-//        if (MemberLevelEnum.getByCode(vipLevel) == null) {
-//            throw new BusinessException("会员等级不合法！");
-//        }
-
         // 2. 查询数据库是否已存在该等级
-        MemberPackageEntity vipPackageEntity = memberPackageDao.selectPackageByVipLevel(vipLevel);
-        if (vipPackageEntity != null) {
-            if (id == null || !Objects.equals(vipPackageEntity.getId(), id)) {
+        MemberPackageEntity memberPackageEntity = memberPackageDao.selectPackageByVipLevel(vipLevel);
+        if (memberPackageEntity != null) {
+            if (id == null || !Objects.equals(memberPackageEntity.getId(), id)) {
                 throw new BusinessException("该会员等级已配置套餐，不允许重复！");
+            }
+            if (!Objects.equals(memberPackageEntity.getVipLevel(), vipLevel) && Objects.equals(memberPackageEntity.getType(), ConfigTypeEnum.SYSTEM.getType())) {
+                throw new BusinessException("系统内置数据不可变更会员等级权重");
             }
         }
     }
@@ -127,9 +127,9 @@ public class MemberPackageService {
         if (memberPackageEntity == null) {
             throw new BusinessException("要删除的数据不存在");
         }
-//        MemberLevelEnum vipLevelEnum = MemberLevelEnum.getByCode(memberPackageEntity.getVipLevel());
-//        if (vipLevelEnum != null) {
-//            throw new BusinessException("系统内置数据，不可删除");
-//        }
+        // 系统内置
+        if (Objects.equals(memberPackageEntity.getType(), ConfigTypeEnum.SYSTEM.getType())) {
+            throw new BusinessException("系统内置数据，不可删除");
+        }
     }
 }

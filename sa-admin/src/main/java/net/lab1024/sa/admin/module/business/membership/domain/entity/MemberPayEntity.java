@@ -18,7 +18,7 @@ import lombok.Data;
  */
 
 @Data
-@TableName("t_pay_record")
+@TableName("t_membership_pay")
 public class MemberPayEntity {
 
     /**

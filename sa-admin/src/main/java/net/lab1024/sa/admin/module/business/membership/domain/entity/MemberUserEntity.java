@@ -17,7 +17,7 @@ import lombok.Data;
  */
 
 @Data
-@TableName("t_vip_user")
+@TableName("t_membership_user")
 public class MemberUserEntity {
 
     /**

@@ -19,17 +19,12 @@ import net.lab1024.sa.base.common.json.deserializer.DictDataDeserializer;
 @Data
 public class MemberPackageAddForm {
 
-    @Schema(description = "主键ID", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotNull(message = "主键ID 不能为空")
-    private Long id;
-
     @Schema(description = "套餐名称 (如: 普通会员包月、超级会员包年)", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotBlank(message = "套餐名称 (如: 普通会员包月、超级会员包年) 不能为空")
     private String name;
 
-    @Schema(description = "绑定的会员等级: MemberLevelEnum", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotNull(message = "绑定的会员等级: MemberLevelEnum 不能为空")
-    @JsonDeserialize(using = DictDataDeserializer.class)
+    @Schema(description = "绑定的会员等级", requiredMode = Schema.RequiredMode.REQUIRED)
+    @NotNull(message = "绑定的会员等级能为空")
     private Integer vipLevel;
 
     @Schema(description = "会员可用时间(天数)，如: 30, 90, 365", requiredMode = Schema.RequiredMode.REQUIRED)
@@ -40,13 +35,9 @@ public class MemberPackageAddForm {
     @NotNull(message = "会员可添加配置数量上限 (核心权益) 不能为空")
     private Integer serviceLimit;
 
-    @Schema(description = "原价", requiredMode = Schema.RequiredMode.REQUIRED)
-    @NotNull(message = "原价 不能为空")
-    private BigDecimal originalPrice;
-
     @Schema(description = "实际售卖价格", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "实际售卖价格 不能为空")
-    private BigDecimal actualPrice;
+    private BigDecimal price;
 
     @Schema(description = "排序码(降序排列)", requiredMode = Schema.RequiredMode.REQUIRED)
     @NotNull(message = "排序码(降序排列) 不能为空")

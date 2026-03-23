@@ -23,7 +23,7 @@ public class MemberPackageVO {
     @Schema(description = "套餐名称 (如: 普通会员包月、超级会员包年)")
     private String name;
 
-    @Schema(description = "绑定的会员等级: MemberLevelEnum")
+    @Schema(description = "绑定的会员等级: 等级权重: 数值越大等级越高")
     private Integer vipLevel;
 
     @Schema(description = "会员可用时间(天数)，如: 30, 90, 365")
@@ -32,14 +32,14 @@ public class MemberPackageVO {
     @Schema(description = "会员可添加服务配置数量上限 (核心权益)")
     private Integer serviceLimit;
 
-    @Schema(description = "原价")
-    private BigDecimal originalPrice;
-
     @Schema(description = "实际售卖价格")
-    private BigDecimal actualPrice;
+    private BigDecimal price;
 
     @Schema(description = "排序码")
     private Integer sortCode;
+
+    @Schema(description = "参数类型: 1内置 2自定义")
+    private Integer type;
 
     @Schema(description = "状态: 1-下架, 0-上架")
     private Integer status;

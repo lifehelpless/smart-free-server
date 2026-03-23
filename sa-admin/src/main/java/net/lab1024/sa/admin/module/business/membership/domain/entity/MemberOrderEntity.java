@@ -18,7 +18,7 @@ import lombok.Data;
  */
 
 @Data
-@TableName("t_order")
+@TableName("t_membership_order")
 public class MemberOrderEntity {
 
     /**
