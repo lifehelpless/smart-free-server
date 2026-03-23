@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="net.lab1024.sa.admin.module.business.tier.dao.VipUserDao">
+<mapper namespace="net.lab1024.sa.admin.module.business.membership.dao.MemberUserDao">
 
     <!-- 查询结果列 -->
     <sql id="base_columns">
-        t_user_vip.id,
-        t_user_vip.user_id,
-        t_user_vip.vip_level,
-        t_user_vip.start_time,
-        t_user_vip.end_time,
-        t_user_vip.status,
-        t_user_vip.create_time,
-        t_user_vip.update_time
+        t_membership_user.id,
+        t_membership_user.user_id,
+        t_membership_user.vip_level,
+        t_membership_user.start_time,
+        t_membership_user.expire_time,
+        t_membership_user.service_limit,
+        t_membership_user.last_order_no,
+        t_membership_user.create_time,
+        t_membership_user.update_time
     </sql>
 
     <!-- 分页查询 -->
-    <select id="queryPage" resultType="net.lab1024.sa.admin.module.business.tier.domain.vo.MemberUserVO">
+    <select id="queryPage" resultType="net.lab1024.sa.admin.module.business.membership.domain.vo.MemberUserVO">
         SELECT
         <include refid="base_columns"/>
-        FROM t_vip_user
+        FROM t_membership_user
     </select>
 
 

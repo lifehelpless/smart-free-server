@@ -2,7 +2,7 @@ package net.lab1024.sa.admin.module.business.membership.service;
 
 import java.util.List;
 import java.util.Objects;
-import net.lab1024.sa.admin.module.business.membership.constant.MemberLevelEnum;
+
 import net.lab1024.sa.admin.module.business.membership.dao.MemberPackageDao;
 import net.lab1024.sa.admin.module.business.membership.domain.entity.MemberPackageEntity;
 import net.lab1024.sa.admin.module.business.membership.domain.vo.MemberPackageVO;
@@ -105,9 +105,9 @@ public class MemberPackageService {
      */
     public void validateVipLevelUnique(Long id, Integer vipLevel) {
         // 1. 先判断等级是否合法
-        if (MemberLevelEnum.getByCode(vipLevel) == null) {
-            throw new BusinessException("会员等级不合法！");
-        }
+//        if (MemberLevelEnum.getByCode(vipLevel) == null) {
+//            throw new BusinessException("会员等级不合法！");
+//        }
 
         // 2. 查询数据库是否已存在该等级
         MemberPackageEntity vipPackageEntity = memberPackageDao.selectPackageByVipLevel(vipLevel);
@@ -127,9 +127,9 @@ public class MemberPackageService {
         if (memberPackageEntity == null) {
             throw new BusinessException("要删除的数据不存在");
         }
-        MemberLevelEnum vipLevelEnum = MemberLevelEnum.getByCode(memberPackageEntity.getVipLevel());
-        if (vipLevelEnum != null) {
-            throw new BusinessException("系统内置数据，不可删除");
-        }
+//        MemberLevelEnum vipLevelEnum = MemberLevelEnum.getByCode(memberPackageEntity.getVipLevel());
+//        if (vipLevelEnum != null) {
+//            throw new BusinessException("系统内置数据，不可删除");
+//        }
     }
 }

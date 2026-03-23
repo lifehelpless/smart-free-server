@@ -4,22 +4,22 @@
 
     <!-- 查询结果列 -->
     <sql id="base_columns">
-        t_order.id,
-        t_order.order_no,
-        t_order.user_id,
-        t_order.goods_id,
-        t_order.goods_name,
-        t_order.order_amount,
-        t_order.status,
-        t_order.create_time,
-        t_order.update_time
+        t_membership_order.id,
+        t_membership_order.order_no,
+        t_membership_order.user_id,
+        t_membership_order.goods_id,
+        t_membership_order.goods_name,
+        t_membership_order.order_amount,
+        t_membership_order.status,
+        t_membership_order.create_time,
+        t_membership_order.update_time
     </sql>
 
     <!-- 分页查询 -->
     <select id="queryPage" resultType="net.lab1024.sa.admin.module.business.membership.domain.vo.MemberOrderVO">
         SELECT
         <include refid="base_columns"/>
-        FROM t_order
+        FROM t_membership_order
         <where>
             <!--订单号-->
             <if test="queryForm.orderNo != null and queryForm.orderNo != ''">

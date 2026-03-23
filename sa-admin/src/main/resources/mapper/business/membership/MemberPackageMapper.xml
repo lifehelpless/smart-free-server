@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="net.lab1024.sa.admin.module.business.tier.dao.VipPackageDao">
+<mapper namespace="net.lab1024.sa.admin.module.business.membership.dao.MemberPackageDao">
 
     <!-- 查询结果列 -->
     <sql id="base_columns">
-        t_vip_package.id,
-        t_vip_package.name,
-        t_vip_package.vip_level,
-        t_vip_package.duration_days,
-        t_vip_package.config_limit,
-        t_vip_package.original_price,
-        t_vip_package.actual_price,
-        t_vip_package.sort_code,
-        t_vip_package.status,
-        t_vip_package.create_time,
-        t_vip_package.update_time
+        t_membership_package.id,
+        t_membership_package.name,
+        t_membership_package.vip_level,
+        t_membership_package.duration_days,
+        t_membership_package.service_limit,
+        t_membership_package.original_price,
+        t_membership_package.actual_price,
+        t_membership_package.sort_code,
+        t_membership_package.status,
+        t_membership_package.create_time,
+        t_membership_package.update_time
     </sql>
 
     <!-- 分页查询 -->
-    <select id="queryPage" resultType="net.lab1024.sa.admin.module.business.tier.domain.vo.MemberPackageVO">
+    <select id="queryPage" resultType="net.lab1024.sa.admin.module.business.membership.domain.vo.MemberPackageVO">
         SELECT
         <include refid="base_columns"/>
-        FROM t_vip_package
+        FROM t_membership_package
     </select>
 
 
