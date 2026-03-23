@@ -1,5 +1,6 @@
 package net.lab1024.sa.admin.module.system.position.domain.form;
 
+import lombok.EqualsAndHashCode;
 import net.lab1024.sa.base.common.domain.PageParam;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -12,6 +13,7 @@ import lombok.Data;
  * @Copyright <a href="https://1024lab.net">1024创新实验室</a>
  */
 
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class PositionQueryForm extends PageParam{
 

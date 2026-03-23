@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="net.lab1024.sa.admin.module.business.membership.dao.MemberPayDao">
+
+    <!-- 查询结果列 -->
+    <sql id="base_columns">
+        t_pay_record.id,
+        t_pay_record.pay_no,
+        t_pay_record.order_no,
+        t_pay_record.pay_channel,
+        t_pay_record.pay_amount,
+        t_pay_record.status,
+        t_pay_record.third_party_no,
+        t_pay_record.pay_time,
+        t_pay_record.create_time
+    </sql>
+
+    <!-- 分页查询 -->
+    <select id="queryPage" resultType="net.lab1024.sa.admin.module.business.membership.domain.vo.MemberPayVO">
+        SELECT
+        <include refid="base_columns"/>
+        FROM t_pay_record
+        <where>
+            <!--订单号-->
+            <if test="queryForm.orderNo != null and queryForm.orderNo != ''">
+                AND INSTR(t_pay_record.order_no,#{queryForm.orderNo})
+            </if>
+            <!--流水号-->
+            <if test="queryForm.payNo != null and queryForm.payNo != ''">
+                AND INSTR(t_pay_record.pay_no,#{queryForm.payNo})
+            </if>
+        </where>
+    </select>
+
+
+</mapper>

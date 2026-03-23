@@ -3,6 +3,7 @@ package net.lab1024.sa.admin.module.business.oa.notice.domain.form;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 通知公告 更新表单
@@ -13,6 +14,7 @@ import lombok.Data;
  * @Email lab1024@163.com
  * @Copyright  <a href="https://1024lab.net">1024创新实验室</a>
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class NoticeUpdateForm extends NoticeAddForm {
 

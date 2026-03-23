@@ -2,6 +2,7 @@ package net.lab1024.sa.admin.module.system.department.domain.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import net.lab1024.sa.admin.module.system.employee.domain.vo.EmployeeVO;
 
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
  * @Email lab1024@163.com
  * @Copyright  <a href="https://1024lab.net">1024创新实验室</a>
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class DepartmentEmployeeTreeVO extends DepartmentVO {
 

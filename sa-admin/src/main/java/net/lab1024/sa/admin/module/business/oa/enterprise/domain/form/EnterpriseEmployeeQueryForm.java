@@ -3,6 +3,7 @@ package net.lab1024.sa.admin.module.business.oa.enterprise.domain.form;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import net.lab1024.sa.base.common.domain.PageParam;
 import org.hibernate.validator.constraints.Length;
 
@@ -15,6 +16,7 @@ import org.hibernate.validator.constraints.Length;
  * @Email lab1024@163.com
  * @Copyright  <a href="https://1024lab.net">1024创新实验室</a>
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class EnterpriseEmployeeQueryForm extends PageParam {
 

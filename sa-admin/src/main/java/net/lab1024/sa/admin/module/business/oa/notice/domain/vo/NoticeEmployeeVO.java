@@ -2,6 +2,7 @@ package net.lab1024.sa.admin.module.business.oa.notice.domain.vo;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.time.LocalDate;
 
@@ -14,6 +15,7 @@ import java.time.LocalDate;
  * @Email lab1024@163.com
  * @Copyright  <a href="https://1024lab.net">1024创新实验室</a>
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class NoticeEmployeeVO extends NoticeVO {
 

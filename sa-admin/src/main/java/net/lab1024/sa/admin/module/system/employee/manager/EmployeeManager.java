@@ -3,14 +3,15 @@ package net.lab1024.sa.admin.module.system.employee.manager;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import jakarta.annotation.Resource;
-import net.lab1024.sa.admin.enums.vip.VipLevelEnum;
-import net.lab1024.sa.admin.module.business.vip.service.VipUserService;
+import net.lab1024.sa.admin.module.business.membership.constant.MemberLevelEnum;
+import net.lab1024.sa.admin.module.business.membership.service.MemberUserService;
 import net.lab1024.sa.admin.module.system.employee.dao.EmployeeDao;
 import net.lab1024.sa.admin.module.system.employee.domain.entity.EmployeeEntity;
 import net.lab1024.sa.admin.module.system.role.dao.RoleEmployeeDao;
 import net.lab1024.sa.admin.module.system.role.domain.entity.RoleEmployeeEntity;
 import net.lab1024.sa.admin.module.system.role.service.RoleEmployeeService;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +40,9 @@ public class EmployeeManager extends ServiceImpl<EmployeeDao, EmployeeEntity> {
     private RoleEmployeeDao roleEmployeeDao;
 
     @Resource
-    private VipUserService vipUserService;
+    private MemberUserService cc;
+    @Autowired
+    private MemberUserService memberUserService;
 
     /**
      * 保存员工
@@ -92,9 +95,9 @@ public class EmployeeManager extends ServiceImpl<EmployeeDao, EmployeeEntity> {
 
         // 设置会员，如果没有则默认基础会员
         if (vipLevel == null) {
-            vipLevel = VipLevelEnum.NONE.getCode();
+            vipLevel = MemberLevelEnum.NONE.getCode();
         }
-        vipUserService.addOrExtendVip(employeeId, vipLevel);
+        memberUserService.addOrExtendVip(employeeId, vipLevel);
     }
 
     /**
