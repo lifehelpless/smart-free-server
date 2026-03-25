@@ -3,6 +3,8 @@ package net.lab1024.sa.admin.module.business.membership.service;
 import java.util.List;
 import java.util.Objects;
 
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import net.lab1024.sa.admin.constant.ConfigTypeEnum;
 import net.lab1024.sa.admin.module.business.membership.dao.MemberPackageDao;
 import net.lab1024.sa.admin.module.business.membership.domain.entity.MemberPackageEntity;
@@ -42,6 +44,17 @@ public class MemberPackageService {
         Page<?> page = SmartPageUtil.convert2PageQuery(queryForm);
         List<MemberPackageVO> list = memberPackageDao.queryPage(page, queryForm);
         return SmartPageUtil.convert2PageResult(page, list);
+    }
+
+
+    /**
+     * 集合
+     */
+    public List<MemberPackageVO> queryList(Integer status) {
+        QueryWrapper<MemberPackageEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("status", status);
+        List<MemberPackageEntity> packageEntities = memberPackageDao.selectList(queryWrapper);
+        return SmartBeanUtil.copyList(packageEntities, MemberPackageVO.class);
     }
 
     /**
@@ -93,13 +106,6 @@ public class MemberPackageService {
 
         memberPackageDao.deleteById(id);
         return ResponseDTO.ok();
-    }
-
-    /**
-     * 校验是否可变更
-     */
-    public void validateUpdatePermission() {
-
     }
 
     /**

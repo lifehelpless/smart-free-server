@@ -66,7 +66,7 @@ public class MemberPackageEntity {
     private Integer type;
 
     /**
-     * 状态: 0-下架, 1-上架
+     * 状态: 0-上架, 1-下架
      */
     private Integer status;
 

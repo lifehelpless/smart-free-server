@@ -1,5 +1,6 @@
 package net.lab1024.sa.admin.module.business.membership.controller;
 
+import net.lab1024.sa.admin.module.business.membership.controller.base.MemberBaseController;
 import net.lab1024.sa.admin.module.business.membership.domain.form.user.MemberUserQueryForm;
 import net.lab1024.sa.admin.module.business.membership.domain.vo.MemberUserVO;
 import net.lab1024.sa.admin.module.business.membership.service.MemberUserService;
@@ -7,6 +8,7 @@ import net.lab1024.sa.base.common.domain.ResponseDTO;
 import net.lab1024.sa.base.common.domain.PageResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,14 +26,14 @@ import jakarta.validation.Valid;
 
 @RestController
 @Tag(name = "用户VIP权益表")
-public class MemberUserController {
+public class MemberUserController extends MemberBaseController {
 
     @Resource
     private MemberUserService memberUserService;
 
     @Operation(summary = "分页查询 @author Mxl")
-    @PostMapping("/userVip/queryPage")
-    @SaCheckPermission("userVip:query")
+    @PostMapping("/user/queryPage")
+    @SaCheckPermission("user:query")
     public ResponseDTO<PageResult<MemberUserVO>> queryPage(@RequestBody @Valid MemberUserQueryForm queryForm) {
         return ResponseDTO.ok(memberUserService.queryPage(queryForm));
     }

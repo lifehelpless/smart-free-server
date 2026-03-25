@@ -1,6 +1,7 @@
 package net.lab1024.sa.admin.module.system.employee.service;
 
 import cn.dev33.satoken.stp.StpUtil;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.common.collect.Lists;
 import jakarta.annotation.Resource;
@@ -443,5 +444,19 @@ public class EmployeeService {
                 employeeUid.toUpperCase() +
                 StringConst.UNDERLINE +
                 employeeUid.toLowerCase();
+    }
+
+    /**
+     * 根据员工id获取员工信息
+     * @param employeeIds
+     * @return
+     */
+    public List<EmployeeEntity> getEmployeeByIds(Set<Long> employeeIds) {
+        if (CollectionUtils.isEmpty(employeeIds)) {
+            return Collections.emptyList();
+        }
+        QueryWrapper<EmployeeEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.in("employee_id", employeeIds);
+        return employeeDao.selectList(queryWrapper);
     }
 }

@@ -10,9 +10,6 @@ import java.math.BigDecimal;
 @Data
 @Schema(description = "创建订单请求参数")
 public class MemberOrderAddForm {
-    @NotNull(message = "用户ID不能为空")
-    @Schema(description = "用户ID")
-    private Long userId;
 
     @NotNull(message = "商品ID不能为空")
     @Schema(description = "商品(VIP套餐)ID")

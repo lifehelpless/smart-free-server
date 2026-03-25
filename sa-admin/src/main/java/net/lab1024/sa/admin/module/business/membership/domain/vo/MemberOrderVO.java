@@ -44,4 +44,9 @@ public class MemberOrderVO {
     @Schema(description = "更新时间")
     private LocalDateTime updateTime;
 
+
+    // ========前端展示字段
+    @Schema(description = "用戶名称")
+    private String userName;
+
 }

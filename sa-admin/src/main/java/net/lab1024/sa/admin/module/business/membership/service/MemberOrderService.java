@@ -13,6 +13,7 @@ import net.lab1024.sa.admin.module.business.membership.domain.form.order.MemberO
 import net.lab1024.sa.admin.module.business.membership.domain.vo.MemberOrderVO;
 import net.lab1024.sa.base.common.domain.PageResult;
 import net.lab1024.sa.base.common.util.SmartPageUtil;
+import net.lab1024.sa.base.common.util.SmartRequestUtil;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -55,8 +56,9 @@ public class MemberOrderService {
      */
     @Transactional(rollbackFor = Exception.class)
     public String createBizOrder(MemberOrderAddForm addForm) {
+        Long requestUserId = SmartRequestUtil.getRequestUserId();
         // 1. 基础校验 (如果是复杂的商品库存/VIP套餐校验，应该在这里调用相关Service)
-        log.info("开始创建订单, userId: {}, goodsId: {}", addForm.getUserId(), addForm.getGoodsId());
+        log.info("开始创建订单, userId: {}, goodsId: {}", requestUserId, addForm.getGoodsId());
 
         // 2. 生成业务订单号 (使用 MyBatis-Plus 的雪花算法生成唯一且趋势递增的 ID)
         String orderNo = ORDER_PREFIX + IdWorker.getIdStr();
@@ -64,7 +66,7 @@ public class MemberOrderService {
         // 3. 构建订单实体
         MemberOrderEntity order = new MemberOrderEntity();
         order.setOrderNo(orderNo);
-        order.setUserId(addForm.getUserId());
+        order.setUserId(requestUserId);
         order.setGoodsId(addForm.getGoodsId());
         order.setGoodsName(addForm.getGoodsName());
         order.setOrderAmount(addForm.getOrderAmount());

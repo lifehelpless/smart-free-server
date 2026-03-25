@@ -1,5 +1,6 @@
 package net.lab1024.sa.admin.module.business.membership.controller;
 
+import net.lab1024.sa.admin.module.business.membership.controller.base.MemberBaseController;
 import net.lab1024.sa.admin.module.business.membership.domain.form.pay.MemberPayAddForm;
 import net.lab1024.sa.admin.module.business.membership.domain.form.pay.MemberPayQueryForm;
 import net.lab1024.sa.admin.module.business.membership.domain.vo.MemberPayVO;
@@ -8,6 +9,7 @@ import net.lab1024.sa.base.common.domain.ResponseDTO;
 import net.lab1024.sa.base.common.domain.PageResult;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.annotations.Operation;
@@ -25,21 +27,21 @@ import jakarta.validation.Valid;
 
 @RestController
 @Tag(name = "支付流水表")
-public class MemberPayController {
+public class MemberPayController extends MemberBaseController {
 
     @Resource
     private MemberPayService memberPayService;
 
     @Operation(summary = "分页查询 @author Mxl")
-    @PostMapping("/payRecord/queryPage")
-    @SaCheckPermission("payRecord:query")
+    @PostMapping("/pay/queryPage")
+    @SaCheckPermission("pay:query")
     public ResponseDTO<PageResult<MemberPayVO>> queryPage(@RequestBody @Valid MemberPayQueryForm queryForm) {
         return ResponseDTO.ok(memberPayService.queryPage(queryForm));
     }
 
 
     @Operation(summary = "支付 @author Mxl")
-    @PostMapping("/payRecord/pay")
+    @PostMapping("/pay/pay")
     public ResponseDTO<String> pay(@RequestBody @Valid MemberPayAddForm addForm) {
         return ResponseDTO.ok(memberPayService.doPay(addForm));
     }
