@@ -11,6 +11,7 @@ import net.lab1024.sa.admin.module.business.membership.domain.entity.MemberOrder
 import net.lab1024.sa.admin.module.business.membership.domain.form.order.MemberOrderAddForm;
 import net.lab1024.sa.admin.module.business.membership.domain.form.order.MemberOrderQueryForm;
 import net.lab1024.sa.admin.module.business.membership.domain.vo.MemberOrderVO;
+import net.lab1024.sa.admin.module.business.membership.service.base.MemberBaseService;
 import net.lab1024.sa.base.common.domain.PageResult;
 import net.lab1024.sa.base.common.util.SmartPageUtil;
 import net.lab1024.sa.base.common.util.SmartRequestUtil;
@@ -29,15 +30,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class MemberOrderService {
-
-    /**
-     * 订单业务前缀
-     */
-    private static final String ORDER_PREFIX = "ORD";
-
-    @Resource
-    private MemberOrderDao memberOrderDao;
+public class MemberOrderService extends MemberBaseService {
 
     /**
      * 分页查询

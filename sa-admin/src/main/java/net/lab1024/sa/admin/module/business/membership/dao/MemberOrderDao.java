@@ -29,4 +29,6 @@ public interface MemberOrderDao extends BaseMapper<MemberOrderEntity> {
      */
     List<MemberOrderVO> queryPage(Page page, @Param("queryForm") MemberOrderQueryForm queryForm);
 
+    MemberOrderVO queryByOrderNo(@Param("orderNo") String orderNo);
+
 }

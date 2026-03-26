@@ -18,7 +18,7 @@ public class MemberPayAddForm {
     @Schema(description = "支付渠道: WECHAT, ALIPAY")
     private String payChannel;
 
-    @NotNull(message = "支付金额不能为空")
-    @Schema(description = "实际需支付金额")
-    private BigDecimal payAmount;
+//    @NotNull(message = "支付金额不能为空")
+//    @Schema(description = "实际需支付金额")
+//    private BigDecimal payAmount;
 }

@@ -12,6 +12,7 @@ import net.lab1024.sa.admin.module.business.membership.domain.vo.MemberPackageVO
 import net.lab1024.sa.admin.module.business.membership.domain.form.vpackage.MemberPackageAddForm;
 import net.lab1024.sa.admin.module.business.membership.domain.form.vpackage.MemberPackageQueryForm;
 import net.lab1024.sa.admin.module.business.membership.domain.form.vpackage.MemberPackageUpdateForm;
+import net.lab1024.sa.admin.module.business.membership.service.base.MemberBaseService;
 import net.lab1024.sa.base.common.exception.BusinessException;
 import net.lab1024.sa.base.common.util.SmartBeanUtil;
 import net.lab1024.sa.base.common.util.SmartPageUtil;
@@ -32,10 +33,7 @@ import jakarta.annotation.Resource;
  */
 
 @Service
-public class MemberPackageService {
-
-    @Resource
-    private MemberPackageDao memberPackageDao;
+public class MemberPackageService extends MemberBaseService {
 
     /**
      * 分页查询

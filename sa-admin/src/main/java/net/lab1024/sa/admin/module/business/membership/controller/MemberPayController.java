@@ -41,9 +41,9 @@ public class MemberPayController extends MemberBaseController {
 
 
     @Operation(summary = "支付 @author Mxl")
-    @PostMapping("/pay/pay")
-    public ResponseDTO<String> pay(@RequestBody @Valid MemberPayAddForm addForm) {
-        return ResponseDTO.ok(memberPayService.doPay(addForm));
+    @PostMapping("/pay/createPayQrCode")
+    public ResponseDTO<String> createPayQrCode(@RequestBody @Valid MemberPayAddForm addForm) {
+        return ResponseDTO.ok(memberPayService.createPayQrCode(addForm));
     }
 
 

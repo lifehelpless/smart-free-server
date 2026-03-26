@@ -10,6 +10,7 @@ import net.lab1024.sa.admin.module.business.membership.domain.entity.MemberPacka
 import net.lab1024.sa.admin.module.business.membership.domain.entity.MemberUserEntity;
 import net.lab1024.sa.admin.module.business.membership.domain.form.user.MemberUserQueryForm;
 import net.lab1024.sa.admin.module.business.membership.domain.vo.MemberUserVO;
+import net.lab1024.sa.admin.module.business.membership.service.base.MemberBaseService;
 import net.lab1024.sa.base.common.domain.PageResult;
 import net.lab1024.sa.base.common.exception.BusinessException;
 import net.lab1024.sa.base.common.util.SmartPageUtil;
@@ -29,13 +30,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class MemberUserService {
-
-    @Resource
-    private MemberUserDao memberUserDao;
-
-    @Resource
-    private MemberPackageDao memberPackageDao;
+public class MemberUserService extends MemberBaseService {
 
     /**
      * 分页查询

@@ -29,4 +29,6 @@ public interface MemberPayDao extends BaseMapper<MemberPayEntity> {
      */
     List<MemberPayVO> queryPage(Page page, @Param("queryForm") MemberPayQueryForm queryForm);
 
+    MemberPayVO queryByOrderNoAndStatus(@Param("orderNo") String orderNo, @Param("status") Integer status);
+
 }
