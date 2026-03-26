@@ -33,6 +33,7 @@ public class RenewalStrategyFactory {
 
     /**
      * 根据数据库里用户配置的 type，获取对应的处理策略
+     * methodType MethodRenewalTypeEnum
      */
     public AbstractRenewalStrategy getStrategy(Integer methodType) {
         AbstractRenewalStrategy strategy = strategyMap.get(methodType);

@@ -67,13 +67,13 @@ public class UserCloudServerEntity {
     private Long updateId;
 
     /**
-     * 
+     *  创建时间
      */
     @TableField(fill = FieldFill.INSERT)
     private LocalDateTime createTime;
 
     /**
-     * 
+     *  修改时间
      */
     @TableField(fill = FieldFill.INSERT_UPDATE)
     private LocalDateTime updateTime;

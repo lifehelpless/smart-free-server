@@ -11,9 +11,6 @@ public final class Constans {
      */
     //服务器 key
     public final static String CLOUD_USERNAME = "username";
-    public final static String CLOUD_PASSWORD = "password";
-    public final static String CLOUD_TYPE = "type";
-    public final static String ENABLE = "enable";
 
 
     /**

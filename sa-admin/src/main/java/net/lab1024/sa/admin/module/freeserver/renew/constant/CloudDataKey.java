@@ -52,9 +52,4 @@ public class CloudDataKey {
     //提交成功信息
     public final static String BLOG_SUCCESS = "提交成功";
 
-
-
-
-
-
 }

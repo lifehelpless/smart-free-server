@@ -13,6 +13,7 @@ import net.lab1024.sa.base.common.util.SmartPageUtil;
 import net.lab1024.sa.base.common.domain.ResponseDTO;
 import net.lab1024.sa.base.common.domain.PageResult;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import net.lab1024.sa.base.module.support.apiencrypt.service.ApiEncryptService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +33,9 @@ public class UserCloudServerService {
     @Resource
     private UserCloudServerDao userCloudServerDao;
 
+    @Resource
+    private ApiEncryptService apiEncryptService;
+
     /**
      * 分页查询
      */
@@ -49,6 +53,8 @@ public class UserCloudServerService {
         Long userId = AdminRequestUtil.getRequestUserId();
         userCloudServerEntity.setCreateId(userId);
         userCloudServerEntity.setUpdateId(userId);
+        // 加密密码
+        userCloudServerEntity.setPassword(apiEncryptService.encrypt(addForm.getPassword()));
         userCloudServerDao.insert(userCloudServerEntity);
         return ResponseDTO.ok();
     }
@@ -60,6 +66,8 @@ public class UserCloudServerService {
     public ResponseDTO<String> update(UserCloudServerUpdateForm updateForm) {
         UserCloudServerEntity userCloudServerEntity = SmartBeanUtil.copy(updateForm, UserCloudServerEntity.class);
         userCloudServerEntity.setUpdateId(AdminRequestUtil.getRequestUserId());
+        // 加密密码
+        userCloudServerEntity.setPassword(apiEncryptService.encrypt(updateForm.getPassword()));
         userCloudServerDao.updateById(userCloudServerEntity);
         return ResponseDTO.ok();
     }

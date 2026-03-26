@@ -1,18 +1,24 @@
 package net.lab1024.sa.admin.module.freeserver.renew.manager;
 
 import com.alibaba.fastjson2.JSONObject;
-import lombok.extern.slf4j.Slf4j;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import jakarta.annotation.Resource;
+import net.lab1024.sa.admin.module.freeserver.instance.dao.UserCloudServerDao;
+import net.lab1024.sa.admin.module.freeserver.instance.domain.entity.UserCloudServerEntity;
 import net.lab1024.sa.admin.module.freeserver.renew.conmmon.BlogGit;
 import net.lab1024.sa.admin.module.freeserver.renew.conmmon.CommonCode;
 import net.lab1024.sa.admin.module.freeserver.renew.constant.*;
+import net.lab1024.sa.admin.module.freeserver.renew.factory.RenewalStrategyFactory;
+import net.lab1024.sa.admin.module.freeserver.renew.strategy.AbstractRenewalStrategy;
 import net.lab1024.sa.admin.util.*;
+import net.lab1024.sa.base.common.enumeration.CommonStatusEnum;
+import net.lab1024.sa.base.module.support.apiencrypt.service.ApiEncryptService;
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.cookie.BasicCookieStore;
 import org.apache.hc.core5.http.HttpEntity;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -20,23 +26,42 @@ import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.*;
 
+/**
+ * 延期服务
+ */
 @Service
 public class PostponeManager {
+
+    @Resource
+    private UserCloudServerDao userCloudServerDao;
+
+    @Resource
+    private ApiEncryptService apiEncryptService;
+
+    @Resource
+    private RenewalStrategyFactory renewalStrategyFactory;
 
     private static final Logger log = LoggerFactory.getLogger(PostponeManager.class);
     private static final Integer WAIT_TIME = 1000 * 60 * Profile.BLOG_INIT_WAIT_TIME;
     private static final int MAX_WAIT_COUNT = Profile.BLOG_INIT_WAIT_COUNT;
 
     public void postpone() {
-        List<Map<String, String>> cloudServers = Profile.cloudServers;
         MailUtil mailUtil = initializeMailUtil();
 
-        for (Map<String, String> serverInfo : cloudServers) {
+        // 查询所有已启用的服务
+        QueryWrapper<UserCloudServerEntity> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("enable", CommonStatusEnum.ENABLE.getValue());
+        List<UserCloudServerEntity> userCloudServerEntities = userCloudServerDao.selectList(queryWrapper);
+
+        // 循环处理服务
+        for (UserCloudServerEntity userCloudServerEntity : userCloudServerEntities) {
             try {
-                processCloudServer(serverInfo, mailUtil);
+                processCloudServer(userCloudServerEntity, mailUtil);
             } catch (Exception e) {
                 log.error("服务器延期过程出错", e);
-                handleException(serverInfo, e, mailUtil);
+                // 发送邮件
+                if (userCloudServerEntity.getEnableEmail().equals(CommonStatusEnum.ENABLE.getValue()))
+                    handleException(userCloudServerEntity, e, mailUtil);
             }
         }
     }
@@ -51,14 +76,20 @@ public class PostponeManager {
                 .build();
     }
 
-    private void processCloudServer(Map<String, String> serverInfo, MailUtil mailUtil) throws Exception {
+    /**
+     * 延期服务
+     * @param userCloudServer 服务配置
+     * @param mailUtil 邮件工具
+     * @throws Exception 异常
+     */
+    private void processCloudServer(UserCloudServerEntity userCloudServer, MailUtil mailUtil) throws Exception {
         BasicCookieStore cookieStore = new BasicCookieStore();
         HttpClient httpClient = HttpUtil.getHttpClient(cookieStore);
         Map<String, String> cookieMap = new LinkedHashMap<>();
 
-        String username = serverInfo.get(Constans.CLOUD_USERNAME);
-        String type = serverInfo.get(Constans.CLOUD_TYPE);
-        boolean enable = Boolean.parseBoolean(serverInfo.get(Constans.ENABLE));
+        String username = userCloudServer.getUsername();
+        String type = String.valueOf(userCloudServer.getServerType());
+        boolean enable = userCloudServer.getEnable().equals(CommonStatusEnum.ENABLE.getValue());
 
         CloudInfo cloudInfo = CloudInfo.getCloudInfo(type);
         String cloudName = Objects.requireNonNull(cloudInfo).getCloudName();
@@ -70,24 +101,40 @@ public class PostponeManager {
             return;
         }
 
-        String status = loginAndCheck(httpClient, cookieStore, cookieMap, mailUtil, serverInfo, cloudInfo, ukLog, uKey);
+        String status = loginAndCheck(httpClient, cookieStore, cookieMap, mailUtil, userCloudServer, cloudInfo, ukLog, uKey);
         // TODO 先不执行延期任务，后续创建多个延期任务提供客户选择
-//        if ("1".equals(status)) {
+        if ("1".equals(status)) {
 //            executeDelayProcess(httpClient, cookieStore, cookieMap, mailUtil, serverInfo, cloudInfo, ukLog, uKey);
-//        }
+            AbstractRenewalStrategy renewalStrategy = renewalStrategyFactory.getStrategy(1);
+            renewalStrategy.executeRenewal(userCloudServer);
+        }
     }
 
+    /**
+     * 登录并查验
+     * @param httpClient
+     * @param cookieStore
+     * @param cookieMap
+     * @param mailUtil
+     * @param userCloudServer
+     * @param cloudInfo
+     * @param ukLog
+     * @param uKey
+     * @return
+     * @throws Exception
+     */
     public String loginAndCheck(HttpClient httpClient,
                                 BasicCookieStore cookieStore,
                                 Map<String, String> cookieMap,
                                 MailUtil mailUtil,
-                                Map<String, String> serverInfo,
+                                UserCloudServerEntity userCloudServer,
                                 CloudInfo cloudInfo,
                                 String ukLog,
                                 String uKey) throws Exception {
 
-        String username = serverInfo.get(Constans.CLOUD_USERNAME);
-        String password = serverInfo.get(Constans.CLOUD_PASSWORD);
+        String username = userCloudServer.getUsername();
+        // 密码解密
+        String password = apiEncryptService.decrypt(userCloudServer.getPassword());
         String cloudName = cloudInfo.getCloudName();
         String type = cloudInfo.getType();
 
@@ -104,6 +151,11 @@ public class PostponeManager {
         }
     }
 
+    /**
+     * 用户信息
+     * @param uKey
+     * @return
+     */
     private Map<String, String> loadUserInfo(String uKey) {
         Map<String, String> userInfo = Profile.userInfos.get(uKey);
         if (userInfo == null) {
@@ -415,9 +467,9 @@ public class PostponeManager {
         mailUtil.sendMail(cloudName + "账号:" + username + ",网页截图生成失败", "blog Url: " + blogUrl);
     }
 
-    private void handleException(Map<String, String> serverInfo, Exception e, MailUtil mailUtil) {
-        String username = serverInfo.get(Constans.CLOUD_USERNAME);
-        String type = serverInfo.get(Constans.CLOUD_TYPE);
+    private void handleException(UserCloudServerEntity userCloudServerEntity, Exception e, MailUtil mailUtil) {
+        String username = userCloudServerEntity.getUsername();
+        String type = String.valueOf(userCloudServerEntity.getServerType());
         CloudInfo cloudInfo = CloudInfo.getCloudInfo(type);
 
         if (cloudInfo != null) {
@@ -426,8 +478,8 @@ public class PostponeManager {
             log.error("{}延期过程出错", ukLog, e);
             mailUtil.sendMail(cloudName + "账号：" + username + ",延期过程出错", e.getMessage());
         } else {
-            log.error("处理服务器配置时出错：{}", serverInfo, e);
-            mailUtil.sendMail("服务器配置错误", "无法获取云服务信息：" + serverInfo);
+            log.error("处理服务器配置时出错：{}", userCloudServerEntity.getUsername(), e);
+            mailUtil.sendMail("服务器配置错误", "无法获取云服务信息：" + userCloudServerEntity.getUsername());
         }
     }
 }

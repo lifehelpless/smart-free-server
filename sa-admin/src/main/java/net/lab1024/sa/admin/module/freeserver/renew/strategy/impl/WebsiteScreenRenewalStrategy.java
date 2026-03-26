@@ -1,6 +1,7 @@
 package net.lab1024.sa.admin.module.freeserver.renew.strategy.impl;
 
 import net.lab1024.sa.admin.module.freeserver.instance.domain.entity.UserCloudServerEntity;
+import net.lab1024.sa.admin.module.freeserver.renew.constant.MethodRenewalTypeEnum;
 import net.lab1024.sa.admin.module.freeserver.renew.strategy.AbstractRenewalStrategy;
 import org.springframework.stereotype.Component;
 
@@ -11,7 +12,7 @@ import org.springframework.stereotype.Component;
 public class WebsiteScreenRenewalStrategy extends AbstractRenewalStrategy {
     @Override
     public Integer getMethodType() { 
-        return 2; // 2代表截图策略
+        return MethodRenewalTypeEnum.ZJ_PC.getType(); // 2代表截图策略
     }
 
     @Override
