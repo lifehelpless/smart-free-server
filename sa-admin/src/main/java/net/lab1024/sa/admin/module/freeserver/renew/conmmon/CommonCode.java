@@ -9,7 +9,6 @@ import net.lab1024.sa.admin.module.freeserver.renew.constant.Profile;
 import net.lab1024.sa.admin.module.freeserver.renew.constant.ResourceAbPath;
 import net.lab1024.sa.admin.util.HttpUtil;
 import net.lab1024.sa.admin.util.JSONUtils;
-import net.lab1024.sa.admin.util.MailUtil;
 import net.lab1024.sa.admin.util.YamlUtil;
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
@@ -86,7 +85,7 @@ public class CommonCode {
      * @param ukLog 用户日志key
      * @throws Exception
      */
-    public static void checkCheckStatus(JSONObject json, String ukLog, String blogUrl, MailUtil mailUtil) throws Exception {
+    public static void checkCheckStatus(JSONObject json, String ukLog, String blogUrl) throws Exception {
 
         json = JSONUtils.getObject(json, CloudDataKey.CHECK_MSG);
 
@@ -106,12 +105,12 @@ public class CommonCode {
                     case CloudDataKey.CHECK_SUCCESS:
                         delete = true;
                         log.info("{}审核通过!!!", ukLog);
-                        mailUtil.sendMail(ukLog+"审核通过","审核通过");
+//                        mailUtil.sendMail(ukLog+"审核通过","审核通过");
                         break;
                     default:
                         delete = true;
                         log.info("{}审核失败,审核结果:{}", ukLog, state);
-                        mailUtil.sendMail(ukLog+"审核失败",state);
+//                        mailUtil.sendMail(ukLog+"审核失败",state);
                 }
             }
             //删除博客

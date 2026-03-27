@@ -16,7 +16,7 @@ public class WebsiteScreenRenewalStrategy extends AbstractRenewalStrategy {
     }
 
     @Override
-    protected String getImageUrl(UserCloudServerEntity serverEntity) {
+    public String getImageUrl() {
         // TODO: 触发截图工具，上传服务器，返回URL
         return "https://oss.my-domain.com/screenshot/site2.jpg";
     }
